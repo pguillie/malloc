@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/08/12 14:09:26 by pguillie          #+#    #+#             */
+/*   Updated: 2018/08/12 18:55:19 by pguillie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc.h"
 
 t_malloc_data	g_malloc_data;
@@ -16,7 +28,7 @@ static void	*ft_malloc_tiny(size_t size)
 		g_malloc_data.free[index] = (g_malloc_data.free[index])->next;
 		return (ptr);
 	}
-	ft_malloc_top(size);
+	return (ft_malloc_top(size));
 }
 
 static void	*ft_malloc_small(size_t size)
@@ -28,8 +40,7 @@ static void	*ft_malloc_small(size_t size)
 	{
 		if (small->size >= size + 2 * sizeof(size_t))
 		{
-			small->prev->next = small->next;
-			small->next->prev = small->prev;
+			ft_free_rm(small);
 			return ((void *)small + 2 * sizeof(size_t));			
 		}
 		small = small->next;

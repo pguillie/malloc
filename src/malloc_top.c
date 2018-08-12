@@ -1,17 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc_top.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/08/12 14:09:15 by pguillie          #+#    #+#             */
+/*   Updated: 2018/08/12 16:58:33 by pguillie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc.h"
 
 t_malloc_data	g_malloc_data;
 
-static t_malloc_arena	*ft_malloc_arena()
+static t_malloc_arena	*ft_malloc_arena(size_t size)
 {
 	t_malloc_arena	*arena;
 	size_t			align;
 	size_t			length;
 
 	align = getpagesize() - 1;
-	length = 100 * (4 * sizeof(size_t) + 64 + 4096) + align & ~align;
+	if (size <= 64 + 2 * sizeof(size_t) + MALLOC_ALIGN & ~MALLOC_ALIGN)
+		length = 100 * (2 * sizeof(size_t) + 64) + align & ~align;
+	else
+		length = 100 * (2 * sizeof(size_t) + 4096) + align & ~align;
 	arena = (t_malloc_arena *)mmap(NULL, length, PROT_READ | PROT_WRITE,
-								   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+								MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (arena == MAP_FAILED)
 		return (NULL);
 	arena->top = (t_malloc_chunk *)arena + sizeof(t_malloc_arena);
@@ -21,18 +36,19 @@ static t_malloc_arena	*ft_malloc_arena()
 	return (arena);
 }
 
-static t_malloc_arena	*ft_malloc_get_arena(size_t size)
+static t_malloc_arena	*ft_malloc_get_arena(t_malloc_arena **first_arena,
+											size_t size)
 {
 	t_malloc_arena	*arena;
-	
-	if (g_malloc_data.arena)
+
+	if (*first_arena)
 	{
-		arena = g_malloc_data.arena;
+		arena = *first_arena;
 		while (arena->top->size < size + sizeof(t_malloc_chunk))
 		{
 			if (arena->next == NULL)
 			{
-				arena->next = ft_malloc_arena();
+				arena->next = ft_malloc_arena(size);
 				if (arena->next = NULL)
 					return (NULL);
 			}
@@ -41,24 +57,24 @@ static t_malloc_arena	*ft_malloc_get_arena(size_t size)
 	}
 	else
 	{
-		g_malloc_data.arena = ft_malloc_arena()
-		arena = g_malloc_data.arena;
+		*first_arena = ft_malloc_arena(size);
+		arena = *first_arena;
 	}
 	return (arena);
 }
 
-void					*ft_malloc_top(size_t size)
+void					*ft_malloc_top(t_malloc_arena *first_arena, size_t size)
 {
 	t_malloc_arena	*arena;
 	t_malloc_chunk	*chunk;
 	size_t			align;
 
-	size = size + 2 * sizeof(t_size) + 7 & ~7;
-	arena = ft_malloc_get_arena(size);
+	size = size + 2 * sizeof(t_size) + MALLOC_ALIGN & ~MALLOC_ALIGN;
+	arena = ft_malloc_get_arena(&first_arena, size);
 	if (arena == NULL)
 		return (NULL);
 	chunk = arena->top;
-	arena->top += size;											/* cast ? */
+	arena->top += size;
 	arena->top->prev_size = size;
 	arena->top->size = chunk->size - size;
 	chunk->size = size;
