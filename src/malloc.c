@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:26 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/12 18:55:19 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/13 17:27:44 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	*ft_malloc_tiny(size_t size)
 		g_malloc_data.free[index] = (g_malloc_data.free[index])->next;
 		return (ptr);
 	}
-	return (ft_malloc_top(size));
+	return (ft_malloc_top(size + 2 * sizeof(size_t) + 7 & ~7));
 }
 
 static void	*ft_malloc_small(size_t size)
@@ -47,7 +47,7 @@ static void	*ft_malloc_small(size_t size)
 		if (small == g_malloc_data.free[7])
 			break;
 	}
-	return (ft_malloc_top(size))
+	return (ft_malloc_top(size + 2 * sizeof(size_t) + 15 & ~15));
 }
 
 static void	*ft_malloc_large(size_t size)

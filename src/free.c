@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:36 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/12 19:46:57 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/13 15:31:09 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	ft_free_large(void *ptr)
 	large = g_malloc_data.large;
 	while (large)
 	{
-		if (ptr = large + sizeof(t_malloc_chunk *))
+		if (ptr == large + sizeof(t_malloc_chunk *))
 		{
 			g_malloc_data.large = large->next;
 			if (munmap(large, large->size) < 0)
