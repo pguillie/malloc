@@ -21,7 +21,7 @@ static t_malloc_arena	*malloc_new_arena(size_t elem_size)
 	size_t			length;
 
 	align = getpagesize() - 1;
-	length = 100 * (2 * sizeof(size_t) + elem_size) + align & ~align;
+	length = (100 * (2 * sizeof(size_t) + elem_size) + align) & ~align;
 	arena = (t_malloc_arena *)mmap(NULL, length, PROT_READ | PROT_WRITE,
 								   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (arena == MAP_FAILED)

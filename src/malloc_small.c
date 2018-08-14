@@ -23,7 +23,7 @@ static void	*malloc_pull(t_malloc_chunk *chunk, size_t size)
 	{
 		(chunk + chunk->size)->prev_size -= size;
 		split = chunk + size;
-		split->size = chunk->size - size & MALLOC_FREE_CHUNK;
+		split->size = (chunk->size - size) & MALLOC_FREE_CHUNK;
 		chunk->size = size;
 		split->prev_size = size;
 		split->prev = chunk;
@@ -41,7 +41,7 @@ void		*malloc_small(size_t size)
 {
 	t_malloc_chunk	*free;
 
-	size = 2 * sizeof(size_t) + size + 15 & ~15;
+	size = (2 * sizeof(size_t) + size + 15) & ~15;
 	free = g_malloc_data.free[0];
 	while (free)
 	{

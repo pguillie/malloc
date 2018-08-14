@@ -14,13 +14,10 @@
 
 t_malloc_data	g_malloc_data;
 
-#include <unistd.h>
-
 void	*malloc(size_t size)
 {
 	void	*ptr;
 
-	write(1, "FOO\n", 4);
 	if (size <= 64)
 		ptr = malloc_tiny(size);
 	else if (size <= 4096)

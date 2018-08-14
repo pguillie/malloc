@@ -21,7 +21,7 @@ void	*malloc_large(size_t size)
 	size_t			length;
 
 	align = getpagesize() - 1;
-	length = size + sizeof(t_malloc_chunk) + align & ~align;
+	length = (size + sizeof(t_malloc_chunk) + align) & ~align;
 	large = (t_malloc_chunk *)mmap(NULL, length, PROT_READ | PROT_WRITE,
 								   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (large == MAP_FAILED)

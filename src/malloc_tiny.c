@@ -19,8 +19,8 @@ void	*malloc_tiny(size_t size)
 	void			*ptr;
 	int				i;
 
-	size = 2 * sizeof(size_t)
-		+ (size <= 2 * sizeof(void *) ? 2 * sizeof(void *) : size) + 7 & ~7;
+	size = (2 * sizeof(size_t)
+			+ (size <= 2 * sizeof(void *) ? 2 * sizeof(void *) : size) + 7) & ~7;
 	i = size / 8 - 3;
 	if (g_malloc_data.free[i])
 	{
