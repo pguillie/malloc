@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:15 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/13 16:47:37 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/14 17:45:30 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,14 @@
 
 t_malloc_data	g_malloc_data;
 
-static t_malloc_arena	*ft_malloc_arena(size_t size)
+static t_malloc_arena	*malloc_new_arena(size_t elem_size)
 {
 	t_malloc_arena	*arena;
 	size_t			align;
 	size_t			length;
 
 	align = getpagesize() - 1;
-	if (size <= 64 + 2 * sizeof(size_t) + MALLOC_ALIGN & ~MALLOC_ALIGN)
-		length = 100 * (2 * sizeof(size_t) + 64) + align & ~align;
-	else
-		length = 100 * (2 * sizeof(size_t) + 4096) + align & ~align;
+	length = 100 * (2 * sizeof(size_t) + elem_size) + align & ~align;
 	arena = (t_malloc_arena *)mmap(NULL, length, PROT_READ | PROT_WRITE,
 								   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (arena == MAP_FAILED)
@@ -33,47 +30,38 @@ static t_malloc_arena	*ft_malloc_arena(size_t size)
 	arena->top->prev_size = 0;
 	arena->top->size = length - sizeof(t_malloc_arena);
 	arena->next = NULL;
-	return (arena);
+	return (arena);	
 }
 
-static t_malloc_arena	*ft_malloc_get_arena(t_malloc_arena **first_arena,
-											size_t size)
+static t_malloc_arena	*malloc_get_arena(t_malloc_arena **start, size_t size,
+										  size_t elem_size)
 {
 	t_malloc_arena	*arena;
 
-	if (*first_arena)
+	if (*start)
 	{
-		arena = *first_arena;
+		arena = *start;
 		while (arena->top->size < size + sizeof(t_malloc_chunk))
 		{
 			if (arena->next == NULL)
-			{
-				arena->next = ft_malloc_arena(size);
-				if (arena->next = NULL)
-					return (NULL);
-			}
+				return ((arena->next = malloc_new_arena(elem_size)));
 			arena = arena->next;
 		}
+		return (arena);
 	}
-	else
-	{
-		*first_arena = ft_malloc_arena(size);
-		arena = *first_arena;
-	}
-	return (arena);
+	return ((*start = malloc_new_arena(elem_size)));
 }
 
-void					*ft_malloc_top(t_malloc_arena *first_arena, size_t size)
+void					*malloc_top(t_malloc_arena **start, size_t size,
+									size_t elem_size)
 {
 	t_malloc_arena	*arena;
 	t_malloc_chunk	*chunk;
-	size_t			align;
 
-	arena = ft_malloc_get_arena(&first_arena, size);
-	if (arena == NULL)
+	if ((arena = malloc_get_arena(start, size, elem_size)) == NULL)
 		return (NULL);
 	chunk = arena->top;
-	arena->top += size;
+	arena->top = chunk + size;
 	arena->top->prev_size = size;
 	arena->top->size = chunk->size - size;
 	chunk->size = size;

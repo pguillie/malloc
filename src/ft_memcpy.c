@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.c                                           :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/12 14:09:26 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/14 17:59:53 by pguillie         ###   ########.fr       */
+/*   Created: 2018/08/14 17:53:34 by pguillie          #+#    #+#             */
+/*   Updated: 2018/08/14 17:56:42 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-t_malloc_data	g_malloc_data;
-
-#include <unistd.h>
-
-void	*malloc(size_t size)
+void	*ft_memcpy(void *src, void *dst, size_t n)
 {
-	void	*ptr;
+	unsigned char	*s;
+	unsigned char	*d;
 
-	write(1, "FOO\n", 4);
-	if (size <= 64)
-		ptr = malloc_tiny(size);
-	else if (size <= 4096)
-		ptr = malloc_small(size);
-	else
-		ptr = malloc_large(size);
-	return (ptr);
+	s = (unsigned char *)src;
+	d = (unsigned char *)dst;
+	while (n--)
+		d[n] = s[n];
+	return (dst);
 }
