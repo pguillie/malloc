@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 18:58:04 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/14 17:52:54 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/15 12:31:13 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void		*realloc(void *ptr, size_t size)
 {
 	t_malloc_chunk	*chunk;
 
+	if (!(g_malloc_data.debug_var & MALLOC_INIT))
+		malloc_init();
 	if (ptr == NULL)
 		return (malloc(size));
 	if (size == 0)

@@ -1,3 +1,15 @@
+#******************************************************************************#
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/08/15 12:56:13 by pguillie          #+#    #+#              #
+#    Updated: 2018/08/15 16:03:27 by pguillie         ###   ########.fr        #
+#                                                                              #
+#******************************************************************************#
+
 ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
@@ -17,10 +29,12 @@ SOURCES	= $(addprefix src/, \
 			free_tiny.c \
 			get_chunk.c \
 			malloc.c \
+			malloc_init.c \
 			malloc_large.c \
 			malloc_small.c \
 			malloc_tiny.c \
 			malloc_top.c \
+			malloc_verbose.c \
 			realloc.c \
 			)
 

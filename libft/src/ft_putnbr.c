@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 17:53:34 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 11:14:30 by pguillie         ###   ########.fr       */
+/*   Created: 2018/08/15 15:45:13 by pguillie          #+#    #+#             */
+/*   Updated: 2018/08/15 15:58:11 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *src, void *dst, size_t n)
+void ft_putnbr(size_t n)
 {
-	unsigned char	*s;
-	unsigned char	*d;
+	char c;
 
-	s = (unsigned char *)src;
-	d = (unsigned char *)dst;
-	while (n--)
-		d[n] = s[n];
-	return (dst);
+	if (n > 9)
+		ft_putnbr(n / 10);
+	c = n % 10 + '0';
+	write(1, &c, 1);
 }

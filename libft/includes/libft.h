@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 17:53:34 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 11:14:30 by pguillie         ###   ########.fr       */
+/*   Created: 2018/08/15 11:22:46 by pguillie          #+#    #+#             */
+/*   Updated: 2018/08/15 16:04:49 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef LIBFT_H
+# define LIBFT_H
 
-void	*ft_memcpy(void *src, void *dst, size_t n)
-{
-	unsigned char	*s;
-	unsigned char	*d;
+# include <unistd.h>
 
-	s = (unsigned char *)src;
-	d = (unsigned char *)dst;
-	while (n--)
-		d[n] = s[n];
-	return (dst);
-}
+void	*ft_memcpy(void *src, void *dst, size_t n);
+void	ft_putnbr(size_t n);
+void	ft_putptr(void *ptr);
+void	ft_putstr(char *str);
+size_t	ft_strlen(char *str);
+
+#endif

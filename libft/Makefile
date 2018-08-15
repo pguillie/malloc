@@ -1,3 +1,15 @@
+#******************************************************************************#
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/08/15 11:22:20 by pguillie          #+#    #+#              #
+#    Updated: 2018/08/15 15:58:00 by pguillie         ###   ########.fr        #
+#                                                                              #
+#******************************************************************************#
+
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra
 
@@ -6,6 +18,10 @@ INCPATH	= includes/
 HEADERS	= $(addprefix $(INCPATH), libft.h)
 SOURCES	= $(addprefix src/, \
 			ft_memcpy.c \
+			ft_putnbr.c \
+			ft_putptr.c \
+			ft_putstr.c \
+			ft_strlen.c \
 			)
 OBJECTS	= $(SOURCES:src/%.c=obj/%.o)
 

@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_putptr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 17:53:34 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 11:14:30 by pguillie         ###   ########.fr       */
+/*   Created: 2018/08/15 15:44:11 by pguillie          #+#    #+#             */
+/*   Updated: 2018/08/15 15:45:04 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *src, void *dst, size_t n)
+void ft_putptr(void *ptr)
 {
-	unsigned char	*s;
-	unsigned char	*d;
+	size_t	n;
+	size_t	i;
+	char	c;
 
-	s = (unsigned char *)src;
-	d = (unsigned char *)dst;
-	while (n--)
-		d[n] = s[n];
-	return (dst);
+	n = (size_t)ptr;
+	write(1, "0x", 2);
+	i = 1L << 60;
+	while (i)
+	{
+		c = n / i > 9 ? n / i + 'A' - 10 : n / i + '0';
+		n = n - n / i * i;
+		write(1, &c, 1);
+		i /= 16;
+	}
 }
