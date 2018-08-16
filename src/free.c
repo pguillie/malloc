@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:36 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 17:35:29 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/16 13:01:16 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void		free(void *ptr)
 		else
 		{
 			if (g_malloc_data.debug_var & MALLOC_VERBOSE)
-				malloc_verbose("free", "pointer not found", ptr, 0);
+				malloc_verbose("free", "pointer not found:", ptr, 0);
+			if (g_malloc_data.debug_var & MALLOC_ERROR_ABORT)
+				abort();
 		}
 	}
+//	write(1, "END FREE\n", 9);
 }

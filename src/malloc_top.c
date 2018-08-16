@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:15 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 18:13:51 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/16 16:03:39 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,10 @@ static t_malloc_arena	*malloc_new_arena(size_t elem_size)
 								   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (arena == MAP_FAILED)
 		return (NULL);
-	arena->top = (t_malloc_chunk *)(arena + 1);//sizeof(t_malloc_arena);
+	arena->top = (t_malloc_chunk *)(arena + 1);
 	arena->top->prev_size = 0;
 	arena->top->size = length - sizeof(t_malloc_arena);
 	arena->next = NULL;
-/* 	malloc_verbose("test1", NULL, (void *)arena + arena->top->size + sizeof(t_malloc_arena), 0); */
-/* 	malloc_verbose("test2", NULL, (void *)arena->top + arena->top->size, 0); */
 	return (arena);	
 }
 
@@ -70,10 +68,10 @@ void					*malloc_top(t_malloc_arena **start, size_t size,
 		malloc_verbose("malloc_top", "top chunk:", arena->top, arena->top->size);
 	}
 	chunk = arena->top;
-	arena->top = chunk + size;
+	arena->top = (void *)chunk + size;
 	arena->top->prev_size = size;
 	arena->top->size = chunk->size - size;
 	chunk->size = size;
-//	write(1, "OK\n", 3);
+//	malloc_verbose("1234567890123456789", "new top:  ", arena->top, arena->top->size);
 	return ((void *)chunk + 2 * sizeof(size_t));
 }

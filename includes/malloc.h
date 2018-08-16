@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 14:35:12 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/16 15:08:07 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ void			free_small(t_malloc_chunk *chunk);
 void			free_large(t_malloc_chunk *chunk);
 
 void			*realloc(void *ptr, size_t size);
+void			*realloc_tiny(t_malloc_chunk *chunk, size_t size);
+void			*realloc_small(t_malloc_chunk *chunk, size_t size);
+void			*realloc_large(t_malloc_chunk *chunk, size_t size);
+void			*realloc_relocate(t_malloc_chunk *chunk,
+								  size_t size, void *data,
+								  void (*free_chunk)(t_malloc_chunk *));
 
 t_malloc_chunk	*get_tiny_chunk(void *ptr);
 t_malloc_chunk	*get_small_chunk(void *ptr);

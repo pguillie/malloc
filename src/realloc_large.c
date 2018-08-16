@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_large.c                                       :+:      :+:    :+:   */
+/*   realloc_large.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 15:15:32 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/16 12:49:13 by pguillie         ###   ########.fr       */
+/*   Created: 2018/08/16 14:37:51 by pguillie          #+#    #+#             */
+/*   Updated: 2018/08/16 15:06:42 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 t_malloc_data	g_malloc_data;
 
-void	free_large(t_malloc_chunk *chunk)
+void	*realloc_large(t_malloc_chunk *chunk, size_t size)
 {
 	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
-		malloc_verbose("free_large", "free chunk:", chunk, chunk->size);
-	chunk->prev->next = chunk->next;
-	chunk->next->prev = chunk->prev;
-	if (g_malloc_data.large == chunk)
-		g_malloc_data.large = (chunk->next != chunk ? chunk->next : NULL);
-	munmap((void *)chunk, chunk->size);
+		malloc_verbose("realloc_large", "chunk:", chunk, chunk->size);
+	if (size > 4096 && size + sizeof(t_malloc_chunk) <= chunk->size)
+		return ((void *)(chunk + 1));
+	return (realloc_relocate(chunk, size, chunk + 1, &free_large));
 }

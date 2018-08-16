@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 14:14:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 17:45:31 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/16 17:13:39 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,25 @@ t_malloc_data	g_malloc_data;
 
 static void				free_remove(t_malloc_chunk *chunk)
 {
+	write(1, "rm…", 3);
 	chunk->prev->next = chunk->next;
 	chunk->next->prev = chunk->prev;
+///
 	if (g_malloc_data.free[0] == chunk)
+	{
 		g_malloc_data.free[0] = (chunk->next != chunk ? chunk->next : NULL);
+		malloc_verbose("deb", "new free small 2", g_malloc_data.free[0],
+					   (g_malloc_data.free[0])->size);
+	}
+	write(1, "done\n", 5);
 }
 
 static t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
 {
 	t_malloc_chunk	*c;
 
-	c = chunk + chunk->size;
+	write(1, "coallesce\n", 10);
+	c = (t_malloc_chunk *)((void *)chunk + chunk->size);
 	if (c->size & MALLOC_FREE_CHUNK)
 	{
 		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
@@ -36,7 +44,7 @@ static t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
 		chunk->size += c->size;
 		free_remove(c);
 	}
-	c = chunk - chunk->prev_size;
+	c = (t_malloc_chunk *)((void *)chunk - chunk->prev_size);
 	if (c->size & MALLOC_FREE_CHUNK)
 	{
 		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
@@ -54,6 +62,7 @@ static void				free_small_insert(t_malloc_chunk *chunk)
 {
 	t_malloc_chunk	*free;
 
+	write(1, "insert\n", 7);
 	free = g_malloc_data.free[0];
 	while (free->size < chunk->size)
 		if ((free = free->next) == g_malloc_data.free[0])
@@ -72,7 +81,10 @@ static void				free_small_set(t_malloc_chunk *chunk)
 		malloc_verbose("free_small", "set free list", NULL, 0);
 	chunk->next = chunk;
 	chunk->prev = chunk;
+///
 	g_malloc_data.free[0] = chunk;
+	malloc_verbose("deb", "new free small 3", g_malloc_data.free[0],
+				   (g_malloc_data.free[0])->size);
 }
 
 void					free_small(t_malloc_chunk *chunk)
@@ -84,4 +96,5 @@ void					free_small(t_malloc_chunk *chunk)
 		free_small_insert(chunk);
 	else
 		free_small_set(chunk);
+	write(1, "end free\n", 9);
 }

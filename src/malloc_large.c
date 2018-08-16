@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 12:55:42 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/14 17:47:11 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/16 12:44:33 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	*malloc_large(size_t size)
 
 	align = getpagesize() - 1;
 	length = (size + sizeof(t_malloc_chunk) + align) & ~align;
+	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+		malloc_verbose("malloc_large", "chunk size:", NULL, length);
 	large = (t_malloc_chunk *)mmap(NULL, length, PROT_READ | PROT_WRITE,
 								   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (large == MAP_FAILED)
@@ -29,6 +31,8 @@ void	*malloc_large(size_t size)
 	large->size = length;
 	if (g_malloc_data.large)
 	{
+		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+			malloc_verbose("malloc_large", "add chunk:", large, large->size);
 		large->prev = (g_malloc_data.large)->prev;
 		large->next = g_malloc_data.large;
 		(g_malloc_data.large)->prev = large;
@@ -36,9 +40,11 @@ void	*malloc_large(size_t size)
 	}
 	else
 	{
+		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+			malloc_verbose("malloc_large", "first large chunk:", large, large->size);
 		large->prev = large;
 		large->next = large;
 		g_malloc_data.large = large;
 	}
-	return ((void *)large + sizeof(t_malloc_chunk));
+	return ((void *)(large + 1));//sizeof(t_malloc_chunk));
 }

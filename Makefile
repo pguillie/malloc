@@ -36,6 +36,10 @@ SOURCES	= $(addprefix src/, \
 			malloc_top.c \
 			malloc_verbose.c \
 			realloc.c \
+			realloc_large.c \
+			realloc_relocate.c \
+			realloc_small.c \
+			realloc_tiny.c \
 			)
 
 OBJECTS	= $(SOURCES:src/%.c=obj/%.o)
