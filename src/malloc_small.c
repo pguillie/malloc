@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 17:32:04 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/16 18:28:31 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/17 15:39:01 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,30 @@ static void	*malloc_pull(t_malloc_chunk *chunk, size_t size)
 	{
 		((t_malloc_chunk *)((void *)chunk + chunk->size))->prev_size -= size;
 		split = (t_malloc_chunk *)((void *)chunk + size);
-		split->size = (chunk->size - size) & MALLOC_FREE_CHUNK;
+		split->size = (chunk->size - size) | MALLOC_FREE_CHUNK;
 		chunk->size = size;
 		split->prev_size = size;
-		split->prev = chunk;
-		split->next = chunk->next;
-		chunk->next = split;
+		free_small_insert(split);
+/* 		split->prev = chunk; */
+/* 		split->next = chunk->next; */
+/* 		chunk->next = split; */
+/* 		split->next->prev = split; */
 		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
 			malloc_verbose("malloc_small", "splitted chunk:",
 						   split, split->size);
 	}
 	chunk->prev->next = chunk->next;
 	chunk->next->prev = chunk->prev;
-///
 	if (g_malloc_data.free[0] == chunk)
-	{
 		g_malloc_data.free[0] = (chunk->next != chunk ? chunk->next : NULL);
-		malloc_verbose("deb", "new free small 1", g_malloc_data.free[0],
-					   (g_malloc_data.free[0])->size);
+	//
+	t_malloc_chunk *f;
+	f = g_malloc_data.free[0];
+	while (f)
+	{
+		malloc_verbose("list", "chunk:", f, f->size);
+		if ((f = f->next) == g_malloc_data.free[0])
+			break ;
 	}
 	return ((void *)chunk + 2 * sizeof(size_t));
 }
@@ -57,7 +63,6 @@ void		*malloc_small(size_t size)
 	free = g_malloc_data.free[0];
 	while (free)
 	{
-		malloc_verbose("deb", "small free:", free, free->size);
 		if (free->size >= size)
 			return (malloc_pull(free, size));
 		if ((free = free->next) == g_malloc_data.free[0])

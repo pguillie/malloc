@@ -6,7 +6,7 @@
 #    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/15 12:56:13 by pguillie          #+#    #+#              #
-#    Updated: 2018/08/15 16:03:27 by pguillie         ###   ########.fr        #
+#    Updated: 2018/08/17 16:12:01 by pguillie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -23,6 +23,7 @@ LIBPATH	= libft/
 LIB		= $(LIBPATH)libft.a
 
 SOURCES	= $(addprefix src/, \
+			calloc.c \
 			free.c \
 			free_large.c \
 			free_small.c \

@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/16 15:08:07 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/17 16:09:11 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void			*malloc_top(t_malloc_arena **arena, size_t size, size_t elem);
 void			free(void *ptr);
 void			free_tiny(t_malloc_chunk *chunk);
 void			free_small(t_malloc_chunk *chunk);
+void			free_small_insert(t_malloc_chunk *chunk);
 void			free_large(t_malloc_chunk *chunk);
 
 void			*realloc(void *ptr, size_t size);
@@ -42,6 +43,8 @@ void			*realloc_large(t_malloc_chunk *chunk, size_t size);
 void			*realloc_relocate(t_malloc_chunk *chunk,
 								  size_t size, void *data,
 								  void (*free_chunk)(t_malloc_chunk *));
+
+void			*calloc(size_t count, size_t size);
 
 t_malloc_chunk	*get_tiny_chunk(void *ptr);
 t_malloc_chunk	*get_small_chunk(void *ptr);

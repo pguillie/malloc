@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 16:13:35 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 17:03:55 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/17 16:21:44 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ void	*malloc_tiny(size_t size)
 	void			*ptr;
 	int				i;
 
-	size = (2 * sizeof(size_t)
-			+ (size <= 2 * sizeof(void *) ? 2 * sizeof(void *) : size) + 7) & ~7;
+//	size = (2 * sizeof(size_t)
+//			+ (size <= 2 * sizeof(void *) ? 2 * sizeof(void *) : size) + 7) & ~7;
+	size = ((size + 15) & ~15) + 2 * sizeof(size_t);
 	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
 		malloc_verbose("malloc_tiny", "chunk size:", NULL, size);
-	i = size / 8 - 3;
+//	i = size / 8 - 3;
+	i = size / 16 - 1;
 	if (g_malloc_data.free[i])
 	{
 		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
