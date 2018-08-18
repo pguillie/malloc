@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/17 16:09:11 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/18 14:08:19 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <sys/mman.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdint.h>
+# include <fcntl.h>
 
 # include "malloc_struct.h"
 # include "malloc_debug_var.h"

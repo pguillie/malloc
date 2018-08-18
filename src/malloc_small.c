@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 17:32:04 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/17 15:39:01 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/18 11:52:02 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@ static void	*malloc_pull(t_malloc_chunk *chunk, size_t size)
 		chunk->size = size;
 		split->prev_size = size;
 		free_small_insert(split);
-/* 		split->prev = chunk; */
-/* 		split->next = chunk->next; */
-/* 		chunk->next = split; */
-/* 		split->next->prev = split; */
 		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
 			malloc_verbose("malloc_small", "splitted chunk:",
 						   split, split->size);
@@ -42,14 +38,14 @@ static void	*malloc_pull(t_malloc_chunk *chunk, size_t size)
 	if (g_malloc_data.free[0] == chunk)
 		g_malloc_data.free[0] = (chunk->next != chunk ? chunk->next : NULL);
 	//
-	t_malloc_chunk *f;
-	f = g_malloc_data.free[0];
-	while (f)
-	{
-		malloc_verbose("list", "chunk:", f, f->size);
-		if ((f = f->next) == g_malloc_data.free[0])
-			break ;
-	}
+/* 	t_malloc_chunk *f; */
+/* 	f = g_malloc_data.free[0]; */
+/* 	while (f) */
+/* 	{ */
+/* 		malloc_verbose("list", "chunk:", f, f->size); */
+/* 		if ((f = f->next) == g_malloc_data.free[0]) */
+/* 			break ; */
+/* 	} */
 	return ((void *)chunk + 2 * sizeof(size_t));
 }
 

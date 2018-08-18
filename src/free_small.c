@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 14:14:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/17 15:55:20 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/18 13:44:29 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
 	if (c->size & MALLOC_FREE_CHUNK)
 	{
 		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
-			malloc_verbose("free_small",
-						   "coallescing with next chunk:", c, c->size);
+			malloc_verbose("free_small", "coallescing with next chunk:", c, c->size);
+		c->size ^= MALLOC_FREE_CHUNK;
 		(c + c->size)->prev_size += chunk->size;
 		chunk->size += c->size;
 		free_remove(c);
@@ -40,13 +40,15 @@ static t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
 	if (c->size & MALLOC_FREE_CHUNK)
 	{
 		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
-			malloc_verbose("free_small",
-						   "coallescing with previous chunk:", c, c->size);
-		(chunk + chunk->size)->prev_size += c->size ^ MALLOC_FREE_CHUNK;
+			malloc_verbose("free_small", "coallescing with prev chunk:", c, c->size);
+		c->size ^= MALLOC_FREE_CHUNK;
+		((t_malloc_chunk *)((void *)chunk + chunk->size))->prev_size
+			+= c->size ^ MALLOC_FREE_CHUNK;
 		c->size += chunk->size;
 		chunk = c;
 		free_remove(c);
 	}
+	chunk->size |= MALLOC_FREE_CHUNK;
 	return (chunk);
 }
 

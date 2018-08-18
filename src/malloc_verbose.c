@@ -6,13 +6,15 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/15 14:35:43 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 16:39:11 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/18 14:13:37 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void malloc_verbose_function(char *fun)
+t_malloc_data	g_malloc_data;
+
+void malloc_verbose_function(char *fun, int fd)
 {
 	char	upper[16];
 	size_t	i;
@@ -26,26 +28,35 @@ void malloc_verbose_function(char *fun)
 		upper[j++] = fun[i++] & ~32;
 	upper[j++] = ' ';
 	upper[j++] = ']';
-	write(1, upper, j);
+	write(fd, upper, j);
 }
 
 void malloc_verbose(char *fun, char *msg, void *ptr, size_t size)
 {
-	malloc_verbose_function(fun);
+	int fd;
+
+	fd = 1;
+	if (g_malloc_data.debug_var & MALLOC_LOG_FILE)
+	{
+		fd = open(g_malloc_data.log_file, O_WRONLY | O_APPEND);
+		if (fd < 0)
+			return ;
+	}
+	malloc_verbose_function(fun, fd);
 	if (msg)
 	{
-		write(1, " ", 1);
-		write(1, msg, ft_strlen(msg));
+		write(fd, " ", 1);
+		write(fd, msg, ft_strlen(msg));
 	}
 	if (ptr)
 	{
-		write(1, " ", 1);
-		ft_putptr(ptr);
+		write(fd, " ", 1);
+		ft_putptr_fd(ptr, fd);
 	}
 	if (size)
 	{
-		write(1, " ", 1);
-		ft_putnbr(size);
+		write(fd, " ", 1);
+		ft_putnbr_fd(size, fd);
 	}
-	write(1, "\n", 1);
+	write(fd, "\n", 1);
 }

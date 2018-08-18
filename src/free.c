@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:36 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/17 16:22:32 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/18 11:51:05 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void		free(void *ptr)
 				abort();
 		}
 	}
-	write(1, "END FREE\n", 9);
+//	write(1, "END FREE\n", 9);
 }

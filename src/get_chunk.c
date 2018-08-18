@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/15 17:58:31 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/16 16:03:52 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/18 13:28:19 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
  
@@ -18,6 +18,7 @@ static t_malloc_chunk	*get_chunk(void *ptr, t_malloc_arena *start)
 {
 	t_malloc_arena	*arena;
 	t_malloc_chunk	*chunk;
+	size_t			size;
 
 	if (start)
 	{
@@ -31,7 +32,8 @@ static t_malloc_chunk	*get_chunk(void *ptr, t_malloc_arena *start)
 //				malloc_verbose("err", "chunk:", chunk, chunk->size);
 				if ((void *)chunk + 2 * sizeof(size_t) == ptr)
 					return (chunk);
-				if (chunk->size < sizeof(t_malloc_chunk) || chunk->size & 7)
+				size = chunk->size & ~MALLOC_FREE_CHUNK;
+				if (size < sizeof(t_malloc_chunk) || size & 7)
 				{
 					if (g_malloc_data.debug_var & MALLOC_ERROR_ABORT
 						|| g_malloc_data.debug_var & MALLOC_CORRUPTION_ABORT)
@@ -39,7 +41,7 @@ static t_malloc_chunk	*get_chunk(void *ptr, t_malloc_arena *start)
 //					write(1, "SHIT\n", 5);
 					return (NULL);
 				}
-				chunk = (void *)chunk + (chunk->size & ~MALLOC_FREE_CHUNK);
+				chunk = (void *)chunk + size;
 //				write(1, "#\n", 2);
 			}
 			arena = arena->next;
