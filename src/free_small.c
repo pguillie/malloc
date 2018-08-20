@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 14:14:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/18 13:44:29 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/20 17:34:46 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,16 @@
 
 t_malloc_data	g_malloc_data;
 
-static void				free_remove(t_malloc_chunk *chunk)
+static void	free_small_set(t_malloc_chunk *chunk)
 {
-	chunk->prev->next = chunk->next;
-	chunk->next->prev = chunk->prev;
-	if (g_malloc_data.free[0] == chunk)
-		g_malloc_data.free[0] = (chunk->next != chunk ? chunk->next : NULL);
+	if (g_malloc_data.debug & MALLOC_VERBOSE)
+		malloc_verbose("free_small", "set free list", NULL, 0);
+	chunk->next = chunk;
+	chunk->prev = chunk;
+	g_malloc_data.free[0] = chunk;
 }
 
-static t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
-{
-	t_malloc_chunk	*c;
-
-	c = (t_malloc_chunk *)((void *)chunk + chunk->size);
-	if (c->size & MALLOC_FREE_CHUNK)
-	{
-		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
-			malloc_verbose("free_small", "coallescing with next chunk:", c, c->size);
-		c->size ^= MALLOC_FREE_CHUNK;
-		(c + c->size)->prev_size += chunk->size;
-		chunk->size += c->size;
-		free_remove(c);
-	}
-	c = (t_malloc_chunk *)((void *)chunk - chunk->prev_size);
-	if (c->size & MALLOC_FREE_CHUNK)
-	{
-		if (g_malloc_data.debug_var & MALLOC_VERBOSE)
-			malloc_verbose("free_small", "coallescing with prev chunk:", c, c->size);
-		c->size ^= MALLOC_FREE_CHUNK;
-		((t_malloc_chunk *)((void *)chunk + chunk->size))->prev_size
-			+= c->size ^ MALLOC_FREE_CHUNK;
-		c->size += chunk->size;
-		chunk = c;
-		free_remove(c);
-	}
-	chunk->size |= MALLOC_FREE_CHUNK;
-	return (chunk);
-}
-
-void					free_small_insert(t_malloc_chunk *chunk)
+void		free_small_insert(t_malloc_chunk *chunk)
 {
 	t_malloc_chunk	*free;
 
@@ -60,7 +31,7 @@ void					free_small_insert(t_malloc_chunk *chunk)
 	while (free->size < chunk->size)
 		if ((free = free->next) == g_malloc_data.free[0])
 			break ;
-	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+	if (g_malloc_data.debug & MALLOC_VERBOSE)
 		malloc_verbose("free_small", "insert before chunk:", free, free->size);
 	chunk->prev = free->prev;
 	free->prev = chunk;
@@ -70,19 +41,20 @@ void					free_small_insert(t_malloc_chunk *chunk)
 		g_malloc_data.free[0] = chunk;
 }
 
-static void				free_small_set(t_malloc_chunk *chunk)
+void		free_small(t_malloc_chunk *chunk)
 {
-	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
-		malloc_verbose("free_small", "set free list", NULL, 0);
-	chunk->next = chunk;
-	chunk->prev = chunk;
-	g_malloc_data.free[0] = chunk;
-}
-
-void					free_small(t_malloc_chunk *chunk)
-{
-	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+	if (g_malloc_data.debug & MALLOC_VERBOSE)
 		malloc_verbose("free_small", "free chunk:", chunk, chunk->size);
+	if (chunk->size & MALLOC_FREE_CHUNK)
+	{
+		if (g_malloc_data.debug & MALLOC_VERBOSE)
+			malloc_verbose("free", "chunk has already been free'd:",
+					chunk, chunk->size ^ MALLOC_FREE_CHUNK);
+		if (g_malloc_data.debug & MALLOC_CORRUPTION_ABORT
+				|| g_malloc_data.debug & MALLOC_ERROR_ABORT)
+			abort();
+		return ;
+	}
 	chunk = free_coalesce(chunk);
 	if (g_malloc_data.free[0])
 		free_small_insert(chunk);

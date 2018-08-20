@@ -36,7 +36,7 @@ void malloc_verbose(char *fun, char *msg, void *ptr, size_t size)
 	int fd;
 
 	fd = 1;
-	if (g_malloc_data.debug_var & MALLOC_LOG_FILE)
+	if (g_malloc_data.debug & MALLOC_LOG_FILE)
 	{
 		fd = open(g_malloc_data.log_file, O_WRONLY | O_APPEND);
 		if (fd < 0)

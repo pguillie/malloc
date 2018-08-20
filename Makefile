@@ -25,6 +25,7 @@ LIB		= $(LIBPATH)libft.a
 SOURCES	= $(addprefix src/, \
 			calloc.c \
 			free.c \
+			free_coalesce.c \
 			free_large.c \
 			free_small.c \
 			free_tiny.c \

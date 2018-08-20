@@ -18,9 +18,9 @@ void	*calloc(size_t count, size_t size)
 	unsigned char	*s;
 	size_t			i;
 
-	if (!(g_malloc_data.debug_var & MALLOC_INIT))
+	if (!(g_malloc_data.debug & MALLOC_INIT))
 		malloc_init();
-	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+	if (g_malloc_data.debug & MALLOC_VERBOSE)
 		malloc_verbose("calloc", "total size:", NULL, count * size);
 	ptr = malloc(count * size);
 	if (ptr)

@@ -19,9 +19,9 @@ void		*realloc(void *ptr, size_t size)
 	t_malloc_chunk	*chunk;
 	void			*ret;
 
-	if (!(g_malloc_data.debug_var & MALLOC_INIT))
+	if (!(g_malloc_data.debug & MALLOC_INIT))
 		malloc_init();
-	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+	if (g_malloc_data.debug & MALLOC_VERBOSE)
 		malloc_verbose("realloc", NULL, ptr, size);
 	if (ptr == NULL)
 		return (malloc(size));
@@ -34,9 +34,9 @@ void		*realloc(void *ptr, size_t size)
 		ret = realloc_small(chunk, size);
 	else if ((chunk = get_large_chunk(ptr)))
 		ret = realloc_large(chunk, size);
-	if (ret == NULL && g_malloc_data.debug_var & MALLOC_ERROR_ABORT)
+	if (ret == NULL && g_malloc_data.debug & MALLOC_ERROR_ABORT)
 		abort();
-	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+	if (g_malloc_data.debug & MALLOC_VERBOSE)
 		malloc_verbose("realloc", "pointer:", ret, 0);
 	return (ret);
 }

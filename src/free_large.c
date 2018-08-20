@@ -16,7 +16,7 @@ t_malloc_data	g_malloc_data;
 
 void	free_large(t_malloc_chunk *chunk)
 {
-	if (g_malloc_data.debug_var & MALLOC_VERBOSE)
+	if (g_malloc_data.debug & MALLOC_VERBOSE)
 		malloc_verbose("free_large", "free chunk:", chunk, chunk->size);
 	chunk->prev->next = chunk->next;
 	chunk->next->prev = chunk->prev;

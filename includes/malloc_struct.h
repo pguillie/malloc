@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/15 11:44:42 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/15 12:20:33 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/08/20 15:21:10 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ typedef struct			s_malloc_data
 	struct s_malloc_arena	*tiny;
 	struct s_malloc_arena	*small;
 	struct s_malloc_chunk	*large;
-	struct s_malloc_chunk	*free[8];
+	struct s_malloc_chunk	*free[9];
 	char					log_file[127];
-	char					debug_var;
+	char					debug;
 }						t_malloc_data;
 
 #endif
