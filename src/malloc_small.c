@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 17:32:04 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/20 17:31:24 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/13 18:15:59 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,15 @@ static void	malloc_small_split(t_malloc_chunk *chunk, size_t size)
 {
 	t_malloc_chunk	*split;
 
-	((t_malloc_chunk *)((void *)chunk + chunk->size))->prev_size -= size;
 	split = (t_malloc_chunk *)((void *)chunk + size);
 	split->size = (chunk->size - size) | MALLOC_FREE_CHUNK;
 	chunk->size = size;
 	split->prev_size = size;
+	if (split->prev_size & MALLOC_FREE_CHUNK)
+	{
+		write(1, "->split\n", 8);
+		abort();
+	}
 	free_small_insert(split);
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
 		malloc_verbose("malloc_small", "splitted chunk:", split, split->size);

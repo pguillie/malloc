@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:15 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/20 17:41:02 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/13 18:45:40 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,17 @@ void					*malloc_top(t_malloc_arena **start, size_t size,
 	chunk = arena->top;
 	arena->top = (t_malloc_chunk *)((void *)chunk + size);
 	arena->top->prev_size = size;
+	if (size & MALLOC_FREE_CHUNK)
+	{
+		write(1, "LOL\n", 4);
+		abort();
+	}
 	arena->top->size = chunk->size - size;
 	chunk->size = size;
+	if (chunk->prev_size & MALLOC_FREE_CHUNK)
+	{
+		write(1, "->top\n", 6);
+		abort();
+	}
 	return ((void *)chunk + 2 * sizeof(size_t));
 }
