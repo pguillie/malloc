@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/15 11:22:46 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/18 14:12:02 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/19 18:08:18 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 
+void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *src, void *dst, size_t n);
 void	ft_putnbr(size_t n);
 void	ft_putnbr_fd(size_t n, int fd);

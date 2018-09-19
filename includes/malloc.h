@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/13 14:59:28 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/19 18:00:01 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <sys/mman.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdarg.h>
 # include <fcntl.h>
 
 # include "malloc_struct.h"
@@ -25,6 +26,8 @@
 # define MALLOC_TINY_SIZE 128
 # define MALLOC_SMALL_SIZE 4096
 # define MALLOC_FREE_CHUNK 1
+
+# define VERBOSE_SIZE 128
 
 void			*malloc(size_t size);
 void			*malloc_tiny(size_t size);
@@ -56,7 +59,8 @@ t_malloc_chunk	*get_large_chunk(void *ptr);
 void			ft_show_alloc_mem();
 
 void			malloc_init(void);
-void			malloc_verbose(char *fun, char *msg, void *ptr, size_t size);
+void			malloc_verbose(char *fun, char *msg, void *ptr, size_t size);//
+void			malloc_print(char *fmt, ...);
 
 extern t_malloc_data	g_malloc_data;
 

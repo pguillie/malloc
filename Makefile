@@ -33,6 +33,7 @@ SOURCES	= $(addprefix src/, \
 			malloc.c \
 			malloc_init.c \
 			malloc_large.c \
+			malloc_print.c \
 			malloc_small.c \
 			malloc_tiny.c \
 			malloc_top.c \

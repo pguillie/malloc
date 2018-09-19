@@ -6,7 +6,7 @@
 #    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/15 11:22:20 by pguillie          #+#    #+#              #
-#    Updated: 2018/08/15 15:58:00 by pguillie         ###   ########.fr        #
+#    Updated: 2018/09/19 18:07:52 by pguillie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -17,6 +17,7 @@ NAME	= libft.a
 INCPATH	= includes/
 HEADERS	= $(addprefix $(INCPATH), libft.h)
 SOURCES	= $(addprefix src/, \
+			ft_bzero.c \
 			ft_memcpy.c \
 			ft_putnbr.c \
 			ft_putptr.c \
