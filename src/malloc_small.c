@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 17:32:04 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/17 15:00:33 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/20 22:24:28 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ static void	malloc_small_split(t_malloc_chunk *chunk, size_t size)
 	chunk->size = size;
 	split->prev_size = size;
 	free_small_insert(split);
-	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("malloc_small", "splitted chunk:", split, split->size);
+	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
+		malloc_verbose("new splitted chunk %p of size %n\n", split, split->size);
 }
 
 static void	*malloc_pull(t_malloc_chunk *chunk, size_t size)
 {
-	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("malloc_small", "pull chunk:", chunk, chunk->size);
 	chunk->size &= ~MALLOC_FREE_CHUNK;
+	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
+		malloc_verbose("pull small chunk %p of size %n\n", chunk, chunk->size);
 	if (chunk->size > size + 2 * sizeof(size_t) + MALLOC_TINY_SIZE)
 		malloc_small_split(chunk, size);
 	chunk->prev->next = chunk->next;
@@ -46,8 +46,8 @@ void		*malloc_small(size_t size)
 	t_malloc_chunk	*free;
 
 	size = (2 * sizeof(size_t) + size + 15) & ~15;
-	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("malloc_small", "chunk size:", NULL, size);
+	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
+		malloc_verbose("small chunk of size %n\n", size);
 	free = g_malloc_data.free[0];
 	while (free)
 	{

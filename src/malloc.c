@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:26 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/19 18:09:21 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/20 19:07:00 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	*malloc(size_t size)
 	if (!(g_malloc_data.debug & MALLOC_INIT))
 		malloc_init();
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_print("%f size : %n\n", "malloc", size);
-//		malloc_verbose("malloc", "size:", NULL, size);
+		malloc_verbose("MALLOC of size %n\n", size);
 	if (size <= MALLOC_TINY_SIZE)
 		ptr = malloc_tiny(size);
 	else if (size <= MALLOC_SMALL_SIZE)
@@ -30,7 +29,6 @@ void	*malloc(size_t size)
 	else
 		ptr = malloc_large(size);
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_print("%f returned pointer: %p", "malloc", ptr);
-//		malloc_verbose("malloc", "pointer:", ptr, 0);
+		malloc_verbose("return pointer %p\n", ptr);
 	return (ptr);
 }

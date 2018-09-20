@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 18:58:04 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/18 11:50:20 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/20 19:07:08 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		*realloc(void *ptr, size_t size)
 	if (!(g_malloc_data.debug & MALLOC_INIT))
 		malloc_init();
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("realloc", NULL, ptr, size);
+		malloc_verbose("REALLOC pointer %p to size %n\n", ptr, size);
 	if (ptr == NULL)
 		return (malloc(size));
 	ret = NULL;
@@ -37,6 +37,6 @@ void		*realloc(void *ptr, size_t size)
 	if (ret == NULL && g_malloc_data.debug & MALLOC_ERROR_ABORT)
 		abort();
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("realloc", "pointer:", ret, 0);
+		malloc_verbose("return pointer %p\n", ret);
 	return (ret);
 }

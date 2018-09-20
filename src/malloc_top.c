@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:15 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/13 18:45:40 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/20 22:11:32 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static t_malloc_arena	*malloc_new_arena(size_t elem_size)
 
 	align = getpagesize() - 1;
 	length = (100 * (2 * sizeof(size_t) + elem_size) + align) & ~align;
-	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("malloc_top", "create new arena of size:", NULL, length);
+	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
+		malloc_verbose("new arena of size %n\n", length);
 	arena = (t_malloc_arena *)mmap(NULL, length, PROT_READ | PROT_WRITE,
 			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (arena == MAP_FAILED)
@@ -62,26 +62,15 @@ void					*malloc_top(t_malloc_arena **start, size_t size,
 
 	if ((arena = malloc_get_arena(start, size, elem_size)) == NULL)
 		return (NULL);
-	if (g_malloc_data.debug & MALLOC_VERBOSE)
-	{
-		malloc_verbose("malloc_top", "arena:", arena, 0);
-		malloc_verbose("malloc_top", "top chunk:", arena->top,
-				arena->top->size);
-	}
+	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
+		malloc_verbose("found space in arena %p\n", arena);
 	chunk = arena->top;
 	arena->top = (t_malloc_chunk *)((void *)chunk + size);
 	arena->top->prev_size = size;
-	if (size & MALLOC_FREE_CHUNK)
-	{
-		write(1, "LOL\n", 4);
-		abort();
-	}
 	arena->top->size = chunk->size - size;
 	chunk->size = size;
-	if (chunk->prev_size & MALLOC_FREE_CHUNK)
-	{
-		write(1, "->top\n", 6);
-		abort();
-	}
+	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
+		malloc_verbose("new chunk %p of size %n\nnew top %p of size %n\n",
+					  chunk, chunk->size, arena->top, arena->top->size);
 	return ((void *)chunk + 2 * sizeof(size_t));
 }

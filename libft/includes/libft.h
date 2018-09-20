@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/15 11:22:46 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/19 18:08:18 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/20 22:23:26 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_putptr(void *ptr);
 void	ft_putptr_fd(void *ptr, int fd);
 void	ft_putstr(char *str);
 void	ft_putstr_fd(char *str, int fd);
+int		ft_strcmp(const char *s1, const char *s2);
 size_t	ft_strlen(char *str);
 
 #endif

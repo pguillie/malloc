@@ -6,7 +6,7 @@
 #    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/15 12:56:13 by pguillie          #+#    #+#              #
-#    Updated: 2018/08/17 16:12:01 by pguillie         ###   ########.fr        #
+#    Updated: 2018/09/20 22:27:50 by pguillie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -18,7 +18,7 @@ SOLINK	= libft_malloc.so
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -fpic
 INCPATH	= includes/
-HEADERS	= $(addprefix $(INCPATH), malloc.h)
+HEADERS	= $(addprefix $(INCPATH), malloc.h malloc_struct.h malloc_debug_var.h)
 LIBPATH	= libft/
 LIB		= $(LIBPATH)libft.a
 
@@ -33,7 +33,6 @@ SOURCES	= $(addprefix src/, \
 			malloc.c \
 			malloc_init.c \
 			malloc_large.c \
-			malloc_print.c \
 			malloc_small.c \
 			malloc_tiny.c \
 			malloc_top.c \

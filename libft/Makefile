@@ -6,7 +6,7 @@
 #    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/15 11:22:20 by pguillie          #+#    #+#              #
-#    Updated: 2018/09/19 18:07:52 by pguillie         ###   ########.fr        #
+#    Updated: 2018/09/20 22:23:02 by pguillie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,6 +22,7 @@ SOURCES	= $(addprefix src/, \
 			ft_putnbr.c \
 			ft_putptr.c \
 			ft_putstr.c \
+			ft_strcmp.c \
 			ft_strlen.c \
 			)
 OBJECTS	= $(SOURCES:src/%.c=obj/%.o)

@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 16:09:20 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/18 12:11:15 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/20 19:17:55 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ void	*calloc(size_t count, size_t size)
 	unsigned char	*s;
 	size_t			i;
 
+	//overflow
 	if (!(g_malloc_data.debug & MALLOC_INIT))
 		malloc_init();
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("calloc", "total size:", NULL, count * size);
+		malloc_verbose("CALLOC of %n objects of size %n\n", count, size);
 	ptr = malloc(count * size);
 	if (ptr)
 	{

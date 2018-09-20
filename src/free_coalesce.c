@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 17:14:38 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/17 16:00:53 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/20 22:14:02 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 /* 	c = (t_malloc_chunk *)((void *)chunk + chunk->size); */
 /* 	if (c->size & MALLOC_FREE_CHUNK) */
 /* 	{ */
-/* 		if (g_malloc_data.debug & MALLOC_VERBOSE) */
-/* 			malloc_verbose("free_small", "coallescing with next chunk:", */
+/* 		if (g_malloc_data.debug & MALLOC_FULL_VERBOSE) */
+/* 			malloc_verbose("coallescing with next chunk %p of size %n\n", */
 /* 					c, c->size); */
 /* 		c->size &= ~MALLOC_FREE_CHUNK; */
 /* 		((t_malloc_chunk *)((void *)c + c->size))->prev_size += chunk->size; */
@@ -45,8 +45,8 @@ t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
 	c = (t_malloc_chunk *)((void *)chunk - chunk->prev_size);
 /* 	if (c->size & MALLOC_FREE_CHUNK) */
 /* 	{ */
-/* 		if (g_malloc_data.debug & MALLOC_VERBOSE) */
-/* 			malloc_verbose("free_small", "coallescing with prev chunk:", */
+/* 		if (g_malloc_data.debug & MALLOC_FULL_VERBOSE) */
+/* 			malloc_verbose(""coallescing with previous chunk %p of size %n\n", */
 /* 					c, c->size); */
 /* 		c->size &= ~MALLOC_FREE_CHUNK; */
 /* 		((t_malloc_chunk *)((void *)chunk + chunk->size))->prev_size += */
@@ -57,4 +57,5 @@ t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
 /* 	} */
 	chunk->size |= MALLOC_FREE_CHUNK;
 	return (chunk);
+
 }

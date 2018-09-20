@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:36 by pguillie          #+#    #+#             */
-/*   Updated: 2018/08/20 15:32:48 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/20 19:06:50 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		free(void *ptr)
 	if (!(g_malloc_data.debug & MALLOC_INIT))
 		malloc_init();
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("free", "pointer:", ptr, 0);
+		malloc_verbose("FREE pointer %p\n", ptr);
 	if (ptr)
 	{
 		if ((chunk = get_tiny_chunk(ptr)))
@@ -33,7 +33,7 @@ void		free(void *ptr)
 		else
 		{
 			if (g_malloc_data.debug & MALLOC_VERBOSE)
-				malloc_verbose("free", "pointer not found:", ptr, 0);
+				malloc_verbose("WARNING free: pointer not found: %p\n", ptr);
 			if (g_malloc_data.debug & MALLOC_CORRUPTION_ABORT
 				|| g_malloc_data.debug & MALLOC_ERROR_ABORT)
 				abort();
