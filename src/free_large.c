@@ -22,8 +22,6 @@ void	free_large(t_malloc_chunk *chunk)
 	chunk->next->prev = chunk->prev;
 	if (g_malloc_data.large == chunk)
 		g_malloc_data.large = (chunk->next != chunk ? chunk->next : NULL);
-	if (munmap((void *)chunk, chunk->size) < 0
-		&& g_malloc_data.debug & MALLOC_FULL_VERBOSE)
-		malloc_verbose("WARNING free failed to unmap large chunk %p\n",
-					   chunk);
+	if (munmap((void *)chunk, chunk->size) < 0)
+		abort_free("failed to unmap page", (void *)chunk, MALLOC_ERROR_ABORT);
 }

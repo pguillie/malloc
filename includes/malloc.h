@@ -61,6 +61,10 @@ void			ft_show_alloc_mem();
 void			malloc_init(void);
 void			malloc_verbose(char *fmt, ...);
 
+void			abort_malloc(char *err, char mode);
+void			abort_free(char *err, void *ptr, char mode);
+void			abort_realloc(char *err, void *ptr, char mode);
+
 extern t_malloc_data	g_malloc_data;
 
 #endif

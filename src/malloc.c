@@ -28,6 +28,8 @@ void	*malloc(size_t size)
 		ptr = malloc_small(size);
 	else
 		ptr = malloc_large(size);
+	if (ptr == NULL)
+		abort_malloc("failed to allocate memory", MALLOC_ERROR_ABORT);
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
 		malloc_verbose("return pointer %p\n", ptr);
 	return (ptr);

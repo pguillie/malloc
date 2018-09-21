@@ -47,15 +47,15 @@ void		malloc_init_abort(int verbose)
 {
 	if (getenv("MALLOC_ERROR_ABORT"))
 	{
-		g_malloc_data.debug |= MALLOC_ERROR_ABORT;
+		g_malloc_data.debug |= (MALLOC_ERROR_ABORT | MALLOC_CORRUPTION_ABORT);
 		if (verbose)
-			malloc_verbose("set 'abort on error' on\n");
+			malloc_verbose("set error_abort on\n");
 	}
-	if (getenv("MALLOC_CORRUPTION_ABORT"))
+	else if (getenv("MALLOC_CORRUPTION_ABORT"))
 	{
 		g_malloc_data.debug |= MALLOC_CORRUPTION_ABORT;
 		if (verbose)
-			malloc_verbose("set 'abort on corruption' on\n");
+			malloc_verbose("set corruption_abort on\n");
 	}
 }
 
@@ -66,10 +66,10 @@ void		malloc_init(void)
 
 	verbose = malloc_init_logfile();
 	if (verbose < 0)
-		write(2, "malloc: unable to create or open logfile\n", 41);
+		write(2, "Error: malloc(): unable to open LOG_FILE\n", 41);
 	if ((value = getenv("MALLOC_VERBOSE")))
 	{
-		if (ft_strcmp(value, "42") == 0 || ft_strcmp(value, "full") == 0)
+		if (ft_strcmp(value, "42") == 0 || ft_strcmp(value, "all") == 0)
 			g_malloc_data.debug |= MALLOC_FULL_VERBOSE;
 		g_malloc_data.debug |= MALLOC_VERBOSE;
 		verbose = 1;

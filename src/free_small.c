@@ -32,7 +32,8 @@ void		free_small_insert(t_malloc_chunk *chunk)
 		if ((free = free->next) == g_malloc_data.free[0])
 			break ;
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
-		malloc_verbose("insert before chunk %p of size %n\n", free, free->size);
+		malloc_verbose("insert before chunk %p of size %n\n",
+					   free, free->size & ~MALLOC_FREE_CHUNK);
 	chunk->prev = free->prev;
 	free->prev = chunk;
 	chunk->next = free;
@@ -44,15 +45,17 @@ void		free_small_insert(t_malloc_chunk *chunk)
 void		free_small(t_malloc_chunk *chunk)
 {
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
-		malloc_verbose("free small chunk %p of size %n\n", chunk, chunk->size);
+		malloc_verbose("free small chunk %p of size %n\n",
+					   chunk, chunk->size & ~MALLOC_FREE_CHUNK);
 	if (chunk->size & MALLOC_FREE_CHUNK)
+		abort_free("double free pointer",
+				   (void *)chunk + 2 * sizeof(size_t), MALLOC_CORRUPTION_ABORT);
+	if (g_malloc_data.debug & MALLOC_SCRIBLE)
 	{
-		malloc_verbose("WARNING free: pointer already been free'd\n",
-					   (void *)chunk + 2 * sizeof(size_t));
-		if (g_malloc_data.debug & MALLOC_CORRUPTION_ABORT
-				|| g_malloc_data.debug & MALLOC_ERROR_ABORT)
-			abort();
-		return ;
+		if (g_malloc_data.debug & MALLOC_VERBOSE)
+			malloc_verbose("fill memory with 0x55 bytes\n");
+		ft_memset((void *)chunk + 2 * sizeof(size_t), 0x55,
+				  chunk->size - 2 * sizeof(size_t));
 	}
 	chunk = free_coalesce(chunk);
 	if (g_malloc_data.free[0])

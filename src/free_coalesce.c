@@ -39,10 +39,10 @@
 
 t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
 {
-	t_malloc_chunk	*c;
+//	t_malloc_chunk	*c;
 
 //	free_coalesce_next(chunk);
-	c = (t_malloc_chunk *)((void *)chunk - chunk->prev_size);
+//	c = (t_malloc_chunk *)((void *)chunk - chunk->prev_size);
 /* 	if (c->size & MALLOC_FREE_CHUNK) */
 /* 	{ */
 /* 		if (g_malloc_data.debug & MALLOC_FULL_VERBOSE) */

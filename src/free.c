@@ -31,12 +31,6 @@ void		free(void *ptr)
 		else if ((chunk = get_large_chunk(ptr)))
 			free_large(chunk);
 		else
-		{
-			if (g_malloc_data.debug & MALLOC_VERBOSE)
-				malloc_verbose("WARNING free: pointer not found: %p\n", ptr);
-			if (g_malloc_data.debug & MALLOC_CORRUPTION_ABORT
-				|| g_malloc_data.debug & MALLOC_ERROR_ABORT)
-				abort();
-		}
+			abort_free("illegal pointer", ptr, MALLOC_CORRUPTION_ABORT);
 	}
 }

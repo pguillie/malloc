@@ -23,6 +23,7 @@ LIBPATH	= libft/
 LIB		= $(LIBPATH)libft.a
 
 SOURCES	= $(addprefix src/, \
+			abort.c \
 			calloc.c \
 			free.c \
 			free_coalesce.c \

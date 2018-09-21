@@ -60,7 +60,7 @@ void			malloc_verbose(char *fmt, ...)
 	size_t	i;
 
 	va_start(ap, fmt);
-	ft_bzero(buff, VERBOSE_SIZE);
+	ft_memset(buff, 0, VERBOSE_SIZE);
 	i = 0;
 	while (*fmt)
 	{

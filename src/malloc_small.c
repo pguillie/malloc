@@ -44,6 +44,7 @@ static void	*malloc_pull(t_malloc_chunk *chunk, size_t size)
 void		*malloc_small(size_t size)
 {
 	t_malloc_chunk	*free;
+	void			*ptr;
 
 	size = (2 * sizeof(size_t) + size + 15) & ~15;
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
@@ -52,7 +53,16 @@ void		*malloc_small(size_t size)
 	while (free)
 	{
 		if (free->size >= size)
-			return (malloc_pull(free, size));
+		{
+			ptr = malloc_pull(free, size);
+			if (g_malloc_data.debug & MALLOC_SCRIBLE)
+			{
+				if (g_malloc_data.debug & MALLOC_VERBOSE)
+					malloc_verbose("fill memory with 0xaa\n");
+				ft_memset(ptr, 0xaa, size - 2 * sizeof(size_t));
+			}
+			return (ptr);
+		}
 		if ((free = free->next) == g_malloc_data.free[0])
 			break ;
 	}

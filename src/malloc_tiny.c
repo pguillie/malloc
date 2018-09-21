@@ -32,6 +32,12 @@ void	*malloc_tiny(size_t size)
 		ptr = (void *)(g_malloc_data.free[i]) + 2 * sizeof(size_t);
 		((t_malloc_chunk *)(g_malloc_data.free[i]))->size &= ~MALLOC_FREE_CHUNK;
 		g_malloc_data.free[i] = (t_malloc_chunk *)(g_malloc_data.free[i])->next;
+		if (g_malloc_data.debug & MALLOC_SCRIBLE)
+		{
+			if (g_malloc_data.debug & MALLOC_VERBOSE)
+				malloc_verbose("fill memory with 0xaa bytes\n");
+			ft_memset(ptr, 0xaa, size - 2 * sizeof(size_t));
+		}
 		return (ptr);
 	}
 	return (malloc_top(&(g_malloc_data.tiny), size, MALLOC_TINY_SIZE));

@@ -15,14 +15,8 @@
 
 # include <unistd.h>
 
-void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *src, void *dst, size_t n);
-void	ft_putnbr(size_t n);
-void	ft_putnbr_fd(size_t n, int fd);
-void	ft_putptr(void *ptr);
-void	ft_putptr_fd(void *ptr, int fd);
-void	ft_putstr(char *str);
-void	ft_putstr_fd(char *str, int fd);
+void	*ft_memset(void *s, int c, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 size_t	ft_strlen(char *str);
 

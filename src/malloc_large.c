@@ -38,6 +38,7 @@ void		*malloc_large(size_t size)
 	t_malloc_chunk	*large;
 	size_t			align;
 	size_t			length;
+	void			*ptr;
 
 	align = getpagesize() - 1;
 	length = (size + sizeof(t_malloc_chunk) + align) & ~align;
@@ -49,5 +50,12 @@ void		*malloc_large(size_t size)
 		return (NULL);
 	large->size = length;
 	malloc_large_add(large);
-	return ((void *)(large + 1));
+	ptr = (void *)(large + 1);
+	if (g_malloc_data.debug & MALLOC_SCRIBLE)
+	{
+		if (g_malloc_data.debug & MALLOC_VERBOSE)
+			malloc_verbose("fill memory with 0xaa\n");
+		ft_memset(ptr, 0xaa, length - sizeof(t_malloc_chunk));
+	}
+	return (ptr);
 }

@@ -17,11 +17,8 @@ NAME	= libft.a
 INCPATH	= includes/
 HEADERS	= $(addprefix $(INCPATH), libft.h)
 SOURCES	= $(addprefix src/, \
-			ft_bzero.c \
 			ft_memcpy.c \
-			ft_putnbr.c \
-			ft_putptr.c \
-			ft_putstr.c \
+			ft_memset.c \
 			ft_strcmp.c \
 			ft_strlen.c \
 			)

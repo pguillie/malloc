@@ -16,18 +16,19 @@ t_malloc_data	g_malloc_data;
 
 void	free_tiny(t_malloc_chunk *chunk)
 {
-	int	i;
+	void	*ptr;
+	int		i;
 
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("tiny chunk %p of size %n\n", chunk, chunk->size);
+	ptr = (void *)chunk + 2 * sizeof(size_t);
 	if (chunk->size & MALLOC_FREE_CHUNK)
+		abort_free("pointer already been free()'d", ptr, MALLOC_CORRUPTION_ABORT);
+	if (g_malloc_data.debug & MALLOC_SCRIBLE)
 	{
-		malloc_verbose("WARNING free: pointer %p already been free'd\n",
-					   (void *)chunk + 2 * sizeof(size_t));
-		if (g_malloc_data.debug & MALLOC_CORRUPTION_ABORT
-			|| g_malloc_data.debug & MALLOC_ERROR_ABORT)
-			abort();
-		return ;
+		if (g_malloc_data.debug & MALLOC_VERBOSE)
+			malloc_verbose("fill memory with 0x55 bytes\n");
+		ft_memset(ptr, 0x55, chunk->size - 2 * sizeof(size_t));
 	}
 	i = chunk->size / 16 - 1;
 	chunk->size |= MALLOC_FREE_CHUNK;

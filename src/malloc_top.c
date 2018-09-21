@@ -59,6 +59,7 @@ void					*malloc_top(t_malloc_arena **start, size_t size,
 {
 	t_malloc_arena	*arena;
 	t_malloc_chunk	*chunk;
+	void			*ptr;
 
 	if ((arena = malloc_get_arena(start, size, elem_size)) == NULL)
 		return (NULL);
@@ -72,5 +73,12 @@ void					*malloc_top(t_malloc_arena **start, size_t size,
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("new chunk %p of size %n\nnew top %p of size %n\n",
 					  chunk, chunk->size, arena->top, arena->top->size);
-	return ((void *)chunk + 2 * sizeof(size_t));
+	ptr = (void *)chunk + 2 * sizeof(size_t);
+	if (g_malloc_data.debug & MALLOC_SCRIBLE)
+	{
+		if (g_malloc_data.debug & MALLOC_VERBOSE)
+			malloc_verbose("fill memory with 0xaa\n");
+		ft_memset(ptr, 0xaa, size - 2 * sizeof(size_t));
+	}
+	return (ptr);
 }
