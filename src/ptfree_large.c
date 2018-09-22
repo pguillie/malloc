@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_large.c                                       :+:      :+:    :+:   */
+/*   ptfree_large.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 15:15:32 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 22:12:56 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 12:35:38 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_malloc_data	g_malloc_data;
 
-void	free_large(t_malloc_chunk *chunk)
+void	ptfree_large(t_malloc_chunk *chunk)
 {
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("free large chunk %p of size %n\n", chunk, chunk->size);

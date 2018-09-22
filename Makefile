@@ -6,7 +6,7 @@
 #    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/15 12:56:13 by pguillie          #+#    #+#              #
-#    Updated: 2018/09/20 22:27:50 by pguillie         ###   ########.fr        #
+#    Updated: 2018/09/22 15:06:43 by pguillie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -17,6 +17,7 @@ NAME	= libft_malloc_$(HOSTTYPE).so
 SOLINK	= libft_malloc.so
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -fpic
+DEBUG	= -g3 -fsanitize=address
 INCPATH	= includes/
 HEADERS	= $(addprefix $(INCPATH), malloc.h malloc_struct.h malloc_debug_var.h)
 LIBPATH	= libft/
@@ -26,23 +27,27 @@ SOURCES	= $(addprefix src/, \
 			abort.c \
 			calloc.c \
 			free.c \
-			free_coalesce.c \
-			free_large.c \
-			free_small.c \
-			free_tiny.c \
 			get_chunk.c \
 			malloc.c \
 			malloc_init.c \
-			malloc_large.c \
-			malloc_small.c \
-			malloc_tiny.c \
-			malloc_top.c \
 			malloc_verbose.c \
+			ptcalloc.c \
+			ptfree.c \
+			ptfree_coalesce.c \
+			ptfree_large.c \
+			ptfree_small.c \
+			ptfree_tiny.c \
+			ptmalloc.c \
+			ptmalloc_large.c \
+			ptmalloc_small.c \
+			ptmalloc_tiny.c \
+			ptmalloc_top.c \
+			ptrealloc.c \
+			ptrealloc_large.c \
+			ptrealloc_relocate.c \
+			ptrealloc_small.c \
+			ptrealloc_tiny.c \
 			realloc.c \
-			realloc_large.c \
-			realloc_relocate.c \
-			realloc_small.c \
-			realloc_tiny.c \
 			)
 
 OBJECTS	= $(SOURCES:src/%.c=obj/%.o)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc_top.c                                       :+:      :+:    :+:   */
+/*   ptmalloc_top.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:15 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/22 11:02:07 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 13:23:03 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_malloc_data	g_malloc_data;
 
-static t_malloc_arena	*malloc_new_arena(size_t elem_size)
+static t_malloc_arena	*ptmalloc_new_arena(size_t elem_size)
 {
 	t_malloc_arena	*arena;
 	size_t			align;
@@ -35,7 +35,7 @@ static t_malloc_arena	*malloc_new_arena(size_t elem_size)
 	return (arena);
 }
 
-static t_malloc_arena	*malloc_get_arena(t_malloc_arena **start, size_t size,
+static t_malloc_arena	*ptmalloc_get_arena(t_malloc_arena **start, size_t size,
 		size_t elem_size)
 {
 	t_malloc_arena	*arena;
@@ -46,22 +46,22 @@ static t_malloc_arena	*malloc_get_arena(t_malloc_arena **start, size_t size,
 		while (arena->top->size < size + sizeof(t_malloc_chunk))
 		{
 			if (arena->next == NULL)
-				return ((arena->next = malloc_new_arena(elem_size)));
+				return ((arena->next = ptmalloc_new_arena(elem_size)));
 			arena = arena->next;
 		}
 		return (arena);
 	}
-	return ((*start = malloc_new_arena(elem_size)));
+	return ((*start = ptmalloc_new_arena(elem_size)));
 }
 
-void					*malloc_top(t_malloc_arena **start, size_t size,
+void					*ptmalloc_top(t_malloc_arena **start, size_t size,
 		size_t elem_size)
 {
 	t_malloc_arena	*arena;
 	t_malloc_chunk	*chunk;
 	void			*ptr;
 
-	if ((arena = malloc_get_arena(start, size, elem_size)) == NULL)
+	if ((arena = ptmalloc_get_arena(start, size, elem_size)) == NULL)
 		return (NULL);
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("found space in arena %p\n", arena);
@@ -77,7 +77,7 @@ void					*malloc_top(t_malloc_arena **start, size_t size,
 	if (g_malloc_data.debug & MALLOC_SCRIBLE)
 	{
 		if (g_malloc_data.debug & MALLOC_VERBOSE)
-			malloc_verbose("fill memory with 0xaa\n");
+			malloc_verbose("fill memory with 0xaa bytes\n");
 		ft_memset(ptr, 0xaa, size - 2 * sizeof(size_t));
 	}
 	return (ptr);

@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   realloc_large.c                                    :+:      :+:    :+:   */
+/*   ptfree.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/16 14:37:51 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 22:14:43 by pguillie         ###   ########.fr       */
+/*   Created: 2018/08/12 14:09:36 by pguillie          #+#    #+#             */
+/*   Updated: 2018/09/22 18:06:50 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-t_malloc_data	g_malloc_data;
-
-void	*realloc_large(t_malloc_chunk *chunk, size_t size)
+void		ptfree(void *ptr)
 {
-	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
-		malloc_verbose("large chunk %p of size %n\n", chunk, chunk->size);
-	if (size > MALLOC_SMALL_SIZE
-		&& size + sizeof(t_malloc_chunk) <= chunk->size)
-		return ((void *)(chunk + 1));
-	return (realloc_relocate(chunk, size, chunk + 1, &free_large));
+	t_malloc_chunk	*chunk;
+
+	if (ptr)
+	{
+		if ((chunk = get_tiny_chunk(ptr)))
+			ptfree_tiny(chunk);
+		else if ((chunk = get_small_chunk(ptr)))
+			ptfree_small(chunk);
+		else if ((chunk = get_large_chunk(ptr)))
+			ptfree_large(chunk);
+		else
+			abort_free("illegal pointer", ptr, MALLOC_CORRUPTION_ABORT);
+	}
 }

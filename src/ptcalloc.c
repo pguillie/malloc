@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ptcalloc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/22 11:45:49 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/22 13:18:56 by pguillie         ###   ########.fr       */
+/*   Created: 2018/08/17 16:09:20 by pguillie          #+#    #+#             */
+/*   Updated: 2018/09/22 13:07:59 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-t_malloc_data	g_malloc_data;
-pthread_mutex_t	g_mutex;
-
-void	free(void *ptr)
+void	*ptcalloc(size_t nelem, size_t elsize)
 {
-	pthread_mutex_lock(&g_mutex);
-	if (!(g_malloc_data.debug & MALLOC_INIT))
-		malloc_init();
-	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("FREE pointer %p\n", ptr);
-	ptfree(ptr);
-	pthread_mutex_unlock(&g_mutex);
+	void	*ptr;
+	size_t	size;
+
+	size = nelem * elsize;
+	//overflow
+	if ((ptr = ptmalloc(size)))
+		ft_memset(ptr, '\0', size);
+	return (ptr);
 }

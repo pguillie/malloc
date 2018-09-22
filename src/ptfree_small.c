@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_small.c                                       :+:      :+:    :+:   */
+/*   ptfree_small.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 14:14:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/22 11:01:45 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 13:20:29 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_malloc_data	g_malloc_data;
 
-static void	free_small_set(t_malloc_chunk *chunk)
+static void	ptfree_small_set(t_malloc_chunk *chunk)
 {
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("set free list\n");
@@ -23,7 +23,7 @@ static void	free_small_set(t_malloc_chunk *chunk)
 	g_malloc_data.free[0] = chunk;
 }
 
-void		free_small_insert(t_malloc_chunk *chunk)
+void		ptfree_small_insert(t_malloc_chunk *chunk)
 {
 	t_malloc_chunk	*free;
 
@@ -32,7 +32,7 @@ void		free_small_insert(t_malloc_chunk *chunk)
 		if ((free = free->next) == g_malloc_data.free[0])
 			break ;
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
-		malloc_verbose("insert before chunk %p of size %n\n",
+		malloc_verbose("insert before free chunk %p of size %n\n",
 				free, free->size & ~MALLOC_FREE_CHUNK);
 	chunk->prev = free->prev;
 	free->prev = chunk;
@@ -42,7 +42,7 @@ void		free_small_insert(t_malloc_chunk *chunk)
 		g_malloc_data.free[0] = chunk;
 }
 
-void		free_small(t_malloc_chunk *chunk)
+void		ptfree_small(t_malloc_chunk *chunk)
 {
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("free small chunk %p of size %n\n",
@@ -57,9 +57,9 @@ void		free_small(t_malloc_chunk *chunk)
 		ft_memset((void *)chunk + 2 * sizeof(size_t), 0x55,
 				chunk->size - 2 * sizeof(size_t));
 	}
-	chunk = free_coalesce(chunk);
+	chunk = ptfree_coalesce(chunk);
 	if (g_malloc_data.free[0])
-		free_small_insert(chunk);
+		ptfree_small_insert(chunk);
 	else
-		free_small_set(chunk);
+		ptfree_small_set(chunk);
 }

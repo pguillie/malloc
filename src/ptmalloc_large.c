@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc_large.c                                     :+:      :+:    :+:   */
+/*   ptmalloc_large.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 12:55:42 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 22:11:17 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 17:14:09 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 t_malloc_data	g_malloc_data;
 
-static void	malloc_large_add(t_malloc_chunk *chunk)
+static void	ptmalloc_large_add(t_malloc_chunk *chunk)
 {
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
-		malloc_verbose("new large chunk %p of size %s\n", chunk, chunk->size);
+		malloc_verbose("new large chunk %p of size %n\n", chunk, chunk->size);
 	if (g_malloc_data.large)
 	{
 		chunk->prev = (g_malloc_data.large)->prev;
@@ -33,7 +33,7 @@ static void	malloc_large_add(t_malloc_chunk *chunk)
 	}
 }
 
-void		*malloc_large(size_t size)
+void		*ptmalloc_large(size_t size)
 {
 	t_malloc_chunk	*large;
 	size_t			align;
@@ -49,12 +49,12 @@ void		*malloc_large(size_t size)
 	if (large == MAP_FAILED)
 		return (NULL);
 	large->size = length;
-	malloc_large_add(large);
+	ptmalloc_large_add(large);
 	ptr = (void *)(large + 1);
 	if (g_malloc_data.debug & MALLOC_SCRIBLE)
 	{
 		if (g_malloc_data.debug & MALLOC_VERBOSE)
-			malloc_verbose("fill memory with 0xaa\n");
+			malloc_verbose("fill memory with 0xaa bytes\n");
 		ft_memset(ptr, 0xaa, length - sizeof(t_malloc_chunk));
 	}
 	return (ptr);

@@ -5,31 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/17 16:09:20 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 19:17:55 by pguillie         ###   ########.fr       */
+/*   Created: 2018/09/22 12:57:37 by pguillie          #+#    #+#             */
+/*   Updated: 2018/09/22 13:18:00 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void	*calloc(size_t count, size_t size)
-{
-	void			*ptr;
-	unsigned char	*s;
-	size_t			i;
+t_malloc_data	g_malloc_data;
+pthread_mutex_t	g_mutex;
 
-	//overflow
+void	*calloc(size_t nelem, size_t elsize)
+{
+	void	*ptr;
+
+	pthread_mutex_lock(&g_mutex);
 	if (!(g_malloc_data.debug & MALLOC_INIT))
 		malloc_init();
 	if (g_malloc_data.debug & MALLOC_VERBOSE)
-		malloc_verbose("CALLOC of %n objects of size %n\n", count, size);
-	ptr = malloc(count * size);
-	if (ptr)
-	{
-		s = (unsigned char *)ptr;
-		i = count * size;
-		while (i--)
-			s[i] = '\0';
-	}
+		malloc_verbose("CALLOC of %n objects of size %n\n", nelem, elsize);
+	ptr = ptcalloc(nelem, elsize);
+	if (g_malloc_data.debug & MALLOC_VERBOSE)
+		malloc_verbose("return pointer %p\n", ptr);
+	pthread_mutex_unlock(&g_mutex);
 	return (ptr);
 }

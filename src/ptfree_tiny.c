@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_tiny.c                                        :+:      :+:    :+:   */
+/*   ptfree_tiny.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 14:09:40 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/22 11:01:26 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 12:36:34 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_malloc_data	g_malloc_data;
 
-void	free_tiny(t_malloc_chunk *chunk)
+void	ptfree_tiny(t_malloc_chunk *chunk)
 {
 	void	*ptr;
 	int		i;
@@ -23,8 +23,7 @@ void	free_tiny(t_malloc_chunk *chunk)
 		malloc_verbose("tiny chunk %p of size %n\n", chunk, chunk->size);
 	ptr = (void *)chunk + 2 * sizeof(size_t);
 	if (chunk->size & MALLOC_FREE_CHUNK)
-		abort_free("pointer already been free()'d",
-				ptr, MALLOC_CORRUPTION_ABORT);
+		abort_free("double free pointer", ptr, MALLOC_CORRUPTION_ABORT);
 	if (g_malloc_data.debug & MALLOC_SCRIBLE)
 	{
 		if (g_malloc_data.debug & MALLOC_VERBOSE)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc_tiny.c                                      :+:      :+:    :+:   */
+/*   ptmalloc_tiny.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 16:13:35 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 22:10:50 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 11:41:42 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_malloc_data	g_malloc_data;
 
-void	*malloc_tiny(size_t size)
+void	*ptmalloc_tiny(size_t size)
 {
 	void	*ptr;
 	int		i;
@@ -40,5 +40,5 @@ void	*malloc_tiny(size_t size)
 		}
 		return (ptr);
 	}
-	return (malloc_top(&(g_malloc_data.tiny), size, MALLOC_TINY_SIZE));
+	return (ptmalloc_top(&(g_malloc_data.tiny), size, MALLOC_TINY_SIZE));
 }

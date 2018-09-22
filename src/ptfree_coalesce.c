@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_coalesce.c                                    :+:      :+:    :+:   */
+/*   ptfree_coalesce.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/20 17:14:38 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 22:14:02 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 12:39:58 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-/* static void		free_remove(t_malloc_chunk *chunk) */
+/* static void		ptfree_remove(t_malloc_chunk *chunk) */
 /* { */
 /* 	chunk->prev->next = chunk->next; */
 /* 	chunk->next->prev = chunk->prev; */
@@ -20,7 +20,7 @@
 /* 		g_malloc_data.free[0] = (chunk->next != chunk ? chunk->next : NULL); */
 /* } */
 
-/* static void		free_coalesce_next(t_malloc_chunk *chunk) */
+/* static void		ptfree_coalesce_next(t_malloc_chunk *chunk) */
 /* { */
 /* 	t_malloc_chunk	*c; */
 
@@ -37,7 +37,7 @@
 /* 	} */
 /* } */
 
-t_malloc_chunk	*free_coalesce(t_malloc_chunk *chunk)
+t_malloc_chunk	*ptfree_coalesce(t_malloc_chunk *chunk)
 {
 //	t_malloc_chunk	*c;
 
