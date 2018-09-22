@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 14:14:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 22:15:16 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 11:01:45 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		free_small_insert(t_malloc_chunk *chunk)
 			break ;
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("insert before chunk %p of size %n\n",
-					   free, free->size & ~MALLOC_FREE_CHUNK);
+				free, free->size & ~MALLOC_FREE_CHUNK);
 	chunk->prev = free->prev;
 	free->prev = chunk;
 	chunk->next = free;
@@ -46,16 +46,16 @@ void		free_small(t_malloc_chunk *chunk)
 {
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("free small chunk %p of size %n\n",
-					   chunk, chunk->size & ~MALLOC_FREE_CHUNK);
+				chunk, chunk->size & ~MALLOC_FREE_CHUNK);
 	if (chunk->size & MALLOC_FREE_CHUNK)
 		abort_free("double free pointer",
-				   (void *)chunk + 2 * sizeof(size_t), MALLOC_CORRUPTION_ABORT);
+				(void *)chunk + 2 * sizeof(size_t), MALLOC_CORRUPTION_ABORT);
 	if (g_malloc_data.debug & MALLOC_SCRIBLE)
 	{
 		if (g_malloc_data.debug & MALLOC_VERBOSE)
 			malloc_verbose("fill memory with 0x55 bytes\n");
 		ft_memset((void *)chunk + 2 * sizeof(size_t), 0x55,
-				  chunk->size - 2 * sizeof(size_t));
+				chunk->size - 2 * sizeof(size_t));
 	}
 	chunk = free_coalesce(chunk);
 	if (g_malloc_data.free[0])

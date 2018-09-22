@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:15 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 22:11:32 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 11:02:07 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void					*malloc_top(t_malloc_arena **start, size_t size,
 	chunk->size = size;
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
 		malloc_verbose("new chunk %p of size %n\nnew top %p of size %n\n",
-					  chunk, chunk->size, arena->top, arena->top->size);
+				chunk, chunk->size, arena->top, arena->top->size);
 	ptr = (void *)chunk + 2 * sizeof(size_t);
 	if (g_malloc_data.debug & MALLOC_SCRIBLE)
 	{

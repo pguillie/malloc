@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 17:32:04 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 22:24:28 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/22 10:59:43 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	malloc_small_split(t_malloc_chunk *chunk, size_t size)
 	split->prev_size = size;
 	free_small_insert(split);
 	if (g_malloc_data.debug & MALLOC_FULL_VERBOSE)
-		malloc_verbose("new splitted chunk %p of size %n\n", split, split->size);
+		malloc_verbose("new splitted chunk %p of size %n\n",
+				split, split->size);
 }
 
 static void	*malloc_pull(t_malloc_chunk *chunk, size_t size)
