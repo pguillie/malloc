@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptcalloc.c                                         :+:      :+:    :+:   */
+/*   reallocf.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/17 16:09:20 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/25 18:41:14 by pguillie         ###   ########.fr       */
+/*   Created: 2018/09/25 17:46:44 by pguillie          #+#    #+#             */
+/*   Updated: 2018/09/25 17:52:24 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void	*ptcalloc(size_t nelem, size_t elsize)
-{
-	void	*ptr;
-	size_t	size;
+t_malloc_data	g_malloc_data;
+pthread_mutex_t	g_mutex;
 
-	size = nelem * elsize;
-	if (nelem > (size_t)(0 - 1) / elsize)
-		return (NULL);
-	if ((ptr = ptmalloc(size)))
-		ft_memset(ptr, '\0', size);
-	return (ptr);
+void	*reallocf(void *ptr, size_t size)
+{
+	void	*ret;
+
+	pthread_mutex_lock(&g_mutex);
+	ret = ptrealloc(ptr, size);
+	if (ret == NULL && size > 0)
+		ptfree(ret);
+	pthread_mutex_unlock(&g_mutex);
+	return (ret);
 }

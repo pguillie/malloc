@@ -6,7 +6,7 @@
 #    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/15 12:56:13 by pguillie          #+#    #+#              #
-#    Updated: 2018/09/25 12:46:51 by pguillie         ###   ########.fr        #
+#    Updated: 2018/09/25 18:51:05 by pguillie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -47,7 +47,14 @@ SOURCES	= $(addprefix src/, \
 			ptrealloc_relocate.c \
 			ptrealloc_small.c \
 			ptrealloc_tiny.c \
+			ptshow_alloc_mem.c \
+			ptshow_alloc_mem_free.c \
 			realloc.c \
+			reallocf.c \
+			show_alloc_mem.c \
+			show_alloc_mem_free.c \
+			show_alloc_mem_res.c \
+			show_alloc_mem_total.c \
 			)
 
 OBJECTS	= $(SOURCES:src/%.c=obj/%.o)

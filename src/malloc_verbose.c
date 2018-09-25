@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/19 16:05:33 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/20 21:46:07 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/25 16:48:26 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,34 @@
 
 t_malloc_data	g_malloc_data;
 
-static size_t	malloc_putnbr_base(size_t n, char *buff, size_t i, size_t base)
+static size_t	malloc_putnbr_base(char *buff, size_t n, size_t base)
 {
+	size_t	i;
+
+	i = 0;
 	if (n >= base)
-		i = malloc_putnbr_base(n / base, buff, i, base);
+		i += malloc_putnbr_base(buff + i, n / base, base);
 	buff[i++] = n % base > 9 ? n % base - 10 + 'A' : n % base + '0';
 	return (i);
 }
 
-static size_t	malloc_vrb_nbr(size_t n, char *buff, size_t i)
+size_t			malloc_vrb_nbr(char *buff, size_t n)
 {
-	return (malloc_putnbr_base(n, buff, i, 10));
+	return (malloc_putnbr_base(buff, n, 10));
 }
 
-static size_t	malloc_vrb_ptr(void *p, char *buff, size_t i)
+size_t			malloc_vrb_ptr(char *buff, void *p)
 {
 	if (p == NULL)
 	{
-		ft_memcpy(buff + i, "(null)", 6);
-		return (i + 6);
+		ft_memcpy(buff, "(null)", 6);
+		return (6);
 	}
-	buff[i++] = '0';
-	buff[i++] = 'x';
-	return (malloc_putnbr_base((size_t)p, buff, i, 16));
+	ft_memcpy(buff, "0x", 2);
+	return (2 + malloc_putnbr_base(buff + 2, (size_t)p, 16));
 }
 
-static void		malloc_verbose_write(char *buff, size_t i)
+static void		malloc_verbose_write(char *buff, size_t len)
 {
 	int	fd;
 
@@ -47,10 +49,10 @@ static void		malloc_verbose_write(char *buff, size_t i)
 	{
 		fd = open(g_malloc_data.log_file, O_WRONLY | O_APPEND);
 		if (fd >= 0)
-			write(fd, buff, i);
+			write(fd, buff, len);
 	}
 	else
-		write(1, buff, i);
+		write(1, buff, len);
 }
 
 void			malloc_verbose(char *fmt, ...)
@@ -68,9 +70,9 @@ void			malloc_verbose(char *fmt, ...)
 		{
 			fmt++;
 			if (*fmt == 'n')
-				i = malloc_vrb_nbr(va_arg(ap, size_t), buff, i);
+				i += malloc_vrb_nbr(buff + i, va_arg(ap, size_t));
 			else if (*fmt == 'p')
-				i = malloc_vrb_ptr(va_arg(ap, void *), buff, i);
+				i += malloc_vrb_ptr(buff + i, va_arg(ap, void *));
 		}
 		else
 			buff[i++] = *fmt;

@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptcalloc.c                                         :+:      :+:    :+:   */
+/*   show_alloc_mem_free.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/17 16:09:20 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/25 18:41:14 by pguillie         ###   ########.fr       */
+/*   Created: 2018/09/25 17:23:50 by pguillie          #+#    #+#             */
+/*   Updated: 2018/09/25 17:58:45 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void	*ptcalloc(size_t nelem, size_t elsize)
-{
-	void	*ptr;
-	size_t	size;
+t_malloc_data	g_malloc_data;
+pthread_mutex_t	g_mutex;
 
-	size = nelem * elsize;
-	if (nelem > (size_t)(0 - 1) / elsize)
-		return (NULL);
-	if ((ptr = ptmalloc(size)))
-		ft_memset(ptr, '\0', size);
-	return (ptr);
+void	show_alloc_mem_free(void)
+{
+	pthread_mutex_lock(&g_mutex);
+	ptshow_alloc_mem_free();
+	pthread_mutex_unlock(&g_mutex);
 }

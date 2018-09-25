@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptcalloc.c                                         :+:      :+:    :+:   */
+/*   show_alloc_mem_total.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/17 16:09:20 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/25 18:41:14 by pguillie         ###   ########.fr       */
+/*   Created: 2018/09/25 17:33:43 by pguillie          #+#    #+#             */
+/*   Updated: 2018/09/25 17:34:30 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void	*ptcalloc(size_t nelem, size_t elsize)
+void	show_alloc_mem_total(size_t total)
 {
-	void	*ptr;
-	size_t	size;
+	char	buff[64];
+	size_t	i;
 
-	size = nelem * elsize;
-	if (nelem > (size_t)(0 - 1) / elsize)
-		return (NULL);
-	if ((ptr = ptmalloc(size)))
-		ft_memset(ptr, '\0', size);
-	return (ptr);
+	ft_memcpy(buff, "Total : ", 8);
+	i = 8;
+	i += malloc_vrb_nbr(buff + i, total);
+	ft_memcpy(buff + i, " octets\n", 8);
+	i += 8;
+	write(1, buff, i);
 }

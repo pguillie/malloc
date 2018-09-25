@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptcalloc.c                                         :+:      :+:    :+:   */
+/*   ptshow_alloc_mem_free.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/17 16:09:20 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/25 18:41:14 by pguillie         ###   ########.fr       */
+/*   Created: 2018/09/25 17:38:02 by pguillie          #+#    #+#             */
+/*   Updated: 2018/09/25 18:57:29 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void	*ptcalloc(size_t nelem, size_t elsize)
-{
-	void	*ptr;
-	size_t	size;
+t_malloc_data	g_malloc_data;
 
-	size = nelem * elsize;
-	if (nelem > (size_t)(0 - 1) / elsize)
-		return (NULL);
-	if ((ptr = ptmalloc(size)))
-		ft_memset(ptr, '\0', size);
-	return (ptr);
+void	ptshow_alloc_mem_free(void)
+{
+	size_t	total;
+
+	total = 0;
+	total += show_alloc_tiny(g_malloc_data.tiny, SHOW_FREE);
+	total += show_alloc_small(g_malloc_data.small, SHOW_FREE);
+	total += show_alloc_large(g_malloc_data.large);
+	show_alloc_mem_total(total);
 }
