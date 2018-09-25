@@ -6,7 +6,7 @@
 /*   By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:09:41 by pguillie          #+#    #+#             */
-/*   Updated: 2018/09/22 13:08:36 by pguillie         ###   ########.fr       */
+/*   Updated: 2018/09/25 14:20:40 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void			ptfree_tiny(t_malloc_chunk *chunk);
 void			ptfree_small(t_malloc_chunk *chunk);
 void			ptfree_small_insert(t_malloc_chunk *chunk);
 void			ptfree_large(t_malloc_chunk *chunk);
-t_malloc_chunk	*ptfree_coalesce(t_malloc_chunk *chunk);
 
 void			*realloc(void *ptr, size_t size);
 void			*ptrealloc(void *ptr, size_t size);
@@ -57,11 +56,14 @@ void			*ptrealloc_relocate(t_malloc_chunk *chunk,
 void			*calloc(size_t nelem, size_t elsize);
 void			*ptcalloc(size_t nelem, size_t elsize);
 
+void			ft_show_alloc_mem();
+
 t_malloc_chunk	*get_tiny_chunk(void *ptr);
 t_malloc_chunk	*get_small_chunk(void *ptr);
 t_malloc_chunk	*get_large_chunk(void *ptr);
 
-void			ft_show_alloc_mem();
+void			malloc_small_list_add(t_malloc_chunk *chunk);
+void			malloc_small_list_remove(t_malloc_chunk *chunk);
 
 void			malloc_init(void);
 void			malloc_verbose(char *fmt, ...);

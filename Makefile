@@ -6,7 +6,7 @@
 #    By: pguillie <pguillie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/15 12:56:13 by pguillie          #+#    #+#              #
-#    Updated: 2018/09/22 15:06:43 by pguillie         ###   ########.fr        #
+#    Updated: 2018/09/25 12:46:51 by pguillie         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -30,10 +30,10 @@ SOURCES	= $(addprefix src/, \
 			get_chunk.c \
 			malloc.c \
 			malloc_init.c \
+			malloc_small_list_api.c \
 			malloc_verbose.c \
 			ptcalloc.c \
 			ptfree.c \
-			ptfree_coalesce.c \
 			ptfree_large.c \
 			ptfree_small.c \
 			ptfree_tiny.c \
