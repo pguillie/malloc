@@ -18,17 +18,21 @@ The supplied shell script allows to run any program with the shared library:
 The library provides an implementation of the libc functions `malloc`, `free`,
 `calloc` and `realloc`, and the libbsd function `reallocf`:
 
-		void *malloc(size_t size);
-		void free(void *ptr);
-		void *calloc(size_t nmemb, size_t size);
-		void *realloc(void *ptr, size_t size);
-		void *reallocf(void *ptr, size_t size);
+```c
+void *malloc(size_t size);
+void free(void *ptr);
+void *calloc(size_t nmemb, size_t size);
+void *realloc(void *ptr, size_t size);
+void *reallocf(void *ptr, size_t size);
+```
 
 It also offers two functions that allow visual on the state of the allocated
 memory:
 
-		void show_alloc_mem();
-		void show_alloc_mem_free();
+```c
+void show_alloc_mem();
+void show_alloc_mem_free();
+```
 
 ### Implementation
 
